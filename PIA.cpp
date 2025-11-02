@@ -1,7 +1,7 @@
 /*EQUIPO 5
 Ruben Gerardo Lozano Rodriguez
-Laura Isabella Villarreal Pérez Maldonado
-José Gabriel Pérez Ramírez
+Laura Isabella Villarreal Pï¿½rez Maldonado
+Josï¿½ Gabriel Pï¿½rez Ramï¿½rez
 */
 #include "validaciones.h"
 #include <iostream>
@@ -73,6 +73,10 @@ void encolar(inscripcion*& frente, inscripcion*& finalCola, nodo* alumno);
 void ordenarCola();
 inscripcion* desencolar(inscripcion*& frente, inscripcion*& finalCola);
 void encolar(inscripcion*& frente, inscripcion*& finalCola, nodo* alumno);
+void recuperarAlumno();
+bool pilaVacia();
+pilaParcial* popPilaParcial();
+
 //main
 int main()
 {
@@ -124,8 +128,10 @@ int main()
         		bajaAlumnos();
         	break;
         	case 3:
-        		cout<<"Recuperar alumnos"<<endl;
-        	break;
+                cout << "Recuperar alumnos" << endl;
+                recuperarAlumno();
+            break;
+
         	case 4:
         		cout<<"Reportes"<<endl;
         		mostrarAlumnos();
@@ -275,7 +281,7 @@ void insertarFinal(string matricula, string nombre, int edad, double promedio, s
     nuevo->sgte = NULL;
     nuevo->anterior = NULL;
 
-    // Si la lista está vacía
+    // Si la lista estï¿½ vacï¿½a
     if (inicio == NULL)
     {
         inicio = nuevo;
@@ -316,7 +322,7 @@ void intercambiarNodos(nodo* a, nodo* b) {
 
 void ordenarPorMatricula() {
     if (inicio == NULL || inicio->sgte == NULL) {
-        // Lista vacía o con un solo elemento, ya está ordenada
+        // Lista vacï¿½a o con un solo elemento, ya estï¿½ ordenada
         return;
     }
 
@@ -324,13 +330,13 @@ void ordenarPorMatricula() {
     nodo* ptr1;
     nodo* lptr = NULL;
 
-    // Implementación de Bubble Sort
+    // Implementaciï¿½n de Bubble Sort
     do {
         swapped = false;
         ptr1 = inicio;
 
         while (ptr1->sgte != lptr) {
-            // Comparar matrículas como strings
+            // Comparar matrï¿½culas como strings
             if (ptr1->matricula > ptr1->sgte->matricula) {
                 intercambiarNodos(ptr1, ptr1->sgte);
                 swapped = true;
@@ -371,7 +377,7 @@ void mostrarAlumnos()
     }
 }
 
-// Función de búsqueda binaria para la lista
+// Funciï¿½n de bï¿½squeda binaria para la lista
 nodo* buscarPorMatricula(const string& matriculaBuscada) {
     if (inicio == NULL) {
         return NULL;
@@ -410,7 +416,7 @@ nodo* buscarPorMatricula(const string& matriculaBuscada) {
         }
     }
 
-    // Verificar el último nodo
+    // Verificar el ï¿½ltimo nodo
     if (izquierda != NULL && izquierda->matricula == matriculaBuscada) {
         return izquierda;
     }
@@ -500,11 +506,11 @@ void bajaParcial()
             encontrado = buscarPorNombre(nombre);
         }
         else if (opcion == 3) {
-            cout << "Regresando al menú anterior" << endl;
+            cout << "Regresando al menï¿½ anterior" << endl;
             break;
         }
         else {
-            cout << "Opción fuera de rango. Intente de nuevo." << endl;
+            cout << "Opciï¿½n fuera de rango. Intente de nuevo." << endl;
             continue;
         }
 
@@ -518,7 +524,7 @@ void bajaParcial()
             cout << "El alumno ha sido dado de baja parcial."<< endl;
             break;
         } else if (opcion != 3) {
-            cout << "No se encontró el alumno." << endl;
+            cout << "No se encontrï¿½ el alumno." << endl;
         }
 
     } while (opcion != 3);
@@ -563,11 +569,11 @@ void bajaParcial()
             encontrado = buscarPorNombre(nombre);
         }
         else if (opcion == 3) {
-            cout << "Regresando al menú anterior" << endl;
+            cout << "Regresando al menï¿½ anterior" << endl;
             break;
         }
         else {
-            cout << "Opción fuera de rango. Intente de nuevo." << endl;
+            cout << "Opciï¿½n fuera de rango. Intente de nuevo." << endl;
             continue;
         }
 
@@ -579,7 +585,7 @@ void bajaParcial()
             cout << "El alumno ha sido eliminado permanentemente de la lista." << endl << endl;
             break;
         } else if (opcion != 3) {
-            cout << "No se encontró el alumno." << endl;
+            cout << "No se encontrï¿½ el alumno." << endl;
         }
 
     } while (opcion != 3);
@@ -701,6 +707,50 @@ void ordenarCola() {
     }
 }
 
+bool pilaVacia() {
+    return tope == NULL;
+}
+
+pilaParcial* popPilaParcial() {
+    if (tope == NULL) return NULL;
+    pilaParcial* nodo = tope;
+    tope = tope->sgte;
+    nodo->sgte = NULL;
+    return nodo;
+}
+
+void recuperarAlumno() 
+{
+    if (pilaVacia()) 
+    {
+        cout << "No hay alumnos en baja parcial para recuperar." << endl;
+        return;
+    }
+
+    // desapila el ultimo alumno dado de baja parcial
+    pilaParcial* rec = popPilaParcial();
+
+    // 3) Defensa: si por alguna razÃ³n ya existe esa matrÃ­cula activa, no duplicar.
+    //    (Esto â€œrompeâ€ el intento de insertar duplicados a propÃ³sito).
+    if (buscarPorMatricula(rec->matricula) != NULL) {
+        cout << "Advertencia: ya existe un alumno activo con la misma matricula ("
+             << rec->matricula << "). Se cancela la recuperacion para evitar duplicados." << endl;
+        // Regresar el nodo a la pila para no perderlo
+        rec->sgte = tope;
+        tope = rec;
+        return;
+    }
+
+    // 4) Insertar al final y reordenar por matrÃ­cula para mantener la invariante
+    insertarFinal(rec->matricula, rec->nombre, rec->edad, rec->promedio, rec->direccion, rec->telefono);
+    ordenarPorMatricula();
+
+    cout << "Alumno recuperado: " << rec->nombre << " (" << rec->matricula << ")" << endl;
+
+    // 5) Liberar el contenedor temporal de la pila (ya clonamos los datos en la lista)
+    delete rec;
+}
+
 
 void inscripciones() {
     if (inicio == NULL) {
@@ -723,7 +773,7 @@ void inscripciones() {
     }
 
     if (numGrupos <= 0 || totalAlumnos == 0) {
-        cout << "Datos inválidos.\n";
+        cout << "Datos invï¿½lidos.\n";
         return;
     }
 
@@ -736,7 +786,7 @@ void inscripciones() {
     int alumnosEnGrupo = 0;
     int limiteGrupo;
 
-    // Si sobran alumnos, los primeros grupos tendrán uno mas
+    // Si sobran alumnos, los primeros grupos tendrï¿½n uno mas
     if (extra > 0)
         limiteGrupo = base + 1;
     else
