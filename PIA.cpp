@@ -1,7 +1,7 @@
 /*EQUIPO 5
 Ruben Gerardo Lozano Rodriguez
-Laura Isabella Villarreal P�rez Maldonado
-Jos� Gabriel P�rez Ram�rez
+Laura Isabella Villarreal P?rez Maldonado
+Jos? Gabriel P?rez Ram?rez
 */
 #include "validaciones.h"
 #include <iostream>
@@ -41,7 +41,8 @@ struct pilaParcial
 };
 pilaParcial* tope = NULL;
 
-struct inscripcion {
+struct inscripcion 
+{
     string matricula;
     string nombre;
     int edad;
@@ -49,7 +50,6 @@ struct inscripcion {
     string direccion;
     string telefono;
     inscripcion* sgte;
-
 };
 inscripcion* frente = NULL;
 inscripcion* finalCola = NULL;
@@ -165,13 +165,15 @@ void altaAlumnos()
         cin.clear();
         getline(cin, matricula);
 
-        if(!validarMatricula(matricula)) {
+        if(!validarMatricula(matricula)) 
+		{
             cout << "Ingrese una matricula valida." << endl;
             continue;
         }
 
 
-        if(buscarPorMatricula(matricula) != NULL) {
+        if(buscarPorMatricula(matricula) != NULL) 
+		{
             cout << "Ya hay un alumno registrado con la misma matricula. " << endl;
             matriculaExiste = true;
         }
@@ -281,7 +283,7 @@ void insertarFinal(string matricula, string nombre, int edad, double promedio, s
     nuevo->sgte = NULL;
     nuevo->anterior = NULL;
 
-    // Si la lista est� vac�a
+    // Si la lista est? vac?a
     if (inicio == NULL)
     {
         inicio = nuevo;
@@ -296,7 +298,8 @@ void insertarFinal(string matricula, string nombre, int edad, double promedio, s
     }
 }
 
-void intercambiarNodos(nodo* a, nodo* b) {
+void intercambiarNodos(nodo* a, nodo* b) 
+{
     // Intercambiar todos los datos entre los nodos
     string tempMatricula = a->matricula;
     string tempNombre = a->nombre;
@@ -320,9 +323,11 @@ void intercambiarNodos(nodo* a, nodo* b) {
     b->telefono = tempTelefono;
 }
 
-void ordenarPorMatricula() {
-    if (inicio == NULL || inicio->sgte == NULL) {
-        // Lista vac�a o con un solo elemento, ya est� ordenada
+void ordenarPorMatricula()
+{
+    if (inicio == NULL || inicio->sgte == NULL) 
+	{
+        // Lista vac?a o con un solo elemento, ya est? ordenada
         return;
     }
 
@@ -330,14 +335,17 @@ void ordenarPorMatricula() {
     nodo* ptr1;
     nodo* lptr = NULL;
 
-    // Implementaci�n de Bubble Sort
-    do {
+    // Implementaci?n de Bubble Sort
+    do 
+	{
         swapped = false;
         ptr1 = inicio;
 
-        while (ptr1->sgte != lptr) {
-            // Comparar matr�culas como strings
-            if (ptr1->matricula > ptr1->sgte->matricula) {
+        while (ptr1->sgte != lptr) 
+		{
+            // Comparar matriculas como strings
+            if (ptr1->matricula > ptr1->sgte->matricula) 
+			{
                 intercambiarNodos(ptr1, ptr1->sgte);
                 swapped = true;
             }
@@ -348,7 +356,7 @@ void ordenarPorMatricula() {
 
     cout << "Lista ordenada por matricula exitosamente!" << endl;
 }
-
+//esta funcion es solo DEBUG, aun faltan los demas reportes
 void mostrarAlumnos()
 {
     if (inicio == NULL)
@@ -377,47 +385,56 @@ void mostrarAlumnos()
     }
 }
 
-// Funci�n de b�squeda binaria para la lista
-nodo* buscarPorMatricula(const string& matriculaBuscada) {
-    if (inicio == NULL) {
+// Funci?n de b?squeda binaria para la lista
+nodo* buscarPorMatricula(const string& matriculaBuscada) 
+{
+    if (inicio == NULL) 
+	{
         return NULL;
     }
 
     nodo* izquierda = inicio;
     nodo* derecha = fin;
 
-    while (izquierda != NULL && derecha != NULL && izquierda != derecha->sgte) {
+    while (izquierda != NULL && derecha != NULL && izquierda != derecha->sgte) 
+	{
         // Calcular el nodo medio
         nodo* medio = izquierda;
         nodo* temp = izquierda;
         int contador = 0;
 
         // Contar nodos entre izquierda y derecha
-        while (temp != NULL && temp != derecha->sgte) {
+        while (temp != NULL && temp != derecha->sgte) 
+		{
             contador++;
             temp = temp->sgte;
         }
 
         // Mover al nodo medio
         int medioIndex = contador / 2;
-        for (int i = 0; i < medioIndex; i++) {
+        for (int i = 0; i < medioIndex; i++) 
+		{
             medio = medio->sgte;
         }
 
         // Comparar
-        if (medio->matricula == matriculaBuscada) {
+        if (medio->matricula == matriculaBuscada) 
+		{
             return medio;
         }
-        else if (medio->matricula < matriculaBuscada) {
+        else if (medio->matricula < matriculaBuscada) 
+		{
             izquierda = medio->sgte;
         }
-        else {
+        else 
+		{
             derecha = medio->anterior;
         }
     }
 
-    // Verificar el �ltimo nodo
-    if (izquierda != NULL && izquierda->matricula == matriculaBuscada) {
+    // Verificar el ?ltimo nodo
+    if (izquierda != NULL && izquierda->matricula == matriculaBuscada)
+	{	
         return izquierda;
     }
     return NULL;
@@ -470,7 +487,8 @@ void bajaParcial()
 
 
 	//pregunta por una matricula o un nombre, si es matricula es busqueda binaria y si es nombre busqueda secuencial
-	    if (inicio == NULL) {
+	if (inicio == NULL) 
+	{
         cout << "No hay alumnos registrados." << endl;
         return;
     }
@@ -479,7 +497,8 @@ void bajaParcial()
     string matricula, nombre;
     nodo* encontrado = NULL;
 
-    do {
+    do 
+	{
         cout << "----- BAJA PARCIAL -----" << endl;
         cout << "1- Buscar por matricula" << endl;
         cout << "2- Buscar por nombre" << endl;
@@ -495,26 +514,31 @@ void bajaParcial()
                 throw runtime_error("Entrada invalida. Por favor ingrese un numero.");
             }
 
-        if (opcion == 1) {
+        if (opcion == 1) 
+		{
             cout << "Ingrese la matricula del alumno: ";
             getline(cin, matricula);
             encontrado = buscarPorMatricula(matricula);
         }
-        else if (opcion == 2) {
+        else if (opcion == 2) 
+		{
             cout << "Ingrese el nombre del alumno: ";
             getline(cin, nombre);
             encontrado = buscarPorNombre(nombre);
         }
-        else if (opcion == 3) {
-            cout << "Regresando al men� anterior" << endl;
+        else if (opcion == 3) 
+		{
+            cout << "Regresando al men? anterior" << endl;
             break;
         }
-        else {
-            cout << "Opci�n fuera de rango. Intente de nuevo." << endl;
+        else 
+		{
+            cout << "Opci?n fuera de rango. Intente de nuevo." << endl;
             continue;
         }
 
-        if (encontrado != NULL) {
+        if (encontrado != NULL) 
+		{
             cout << "\nAlumno encontrado: " << encontrado->nombre << endl;
             cout << "Matricula: " << encontrado->matricula << endl;
 
@@ -523,17 +547,20 @@ void bajaParcial()
 
             cout << "El alumno ha sido dado de baja parcial."<< endl;
             break;
-        } else if (opcion != 3) {
-            cout << "No se encontr� el alumno." << endl;
+        } else if (opcion != 3) 
+		{
+            cout << "No se encontr? el alumno." << endl;
         }
 
     } while (opcion != 3);
 }
 
 
-	//pregunta por una matricula o un nombre, si es matricula es busqueda binaria y si es nombre busqueda secuencial
-	void bajaTotal() {
-    if (inicio == NULL) {
+//pregunta por una matricula o un nombre, si es matricula es busqueda binaria y si es nombre busqueda secuencial
+void bajaTotal() 
+{
+    if (inicio == NULL) 
+	{
         cout << "No hay alumnos registrados." << endl;
         return;
     }
@@ -542,7 +569,8 @@ void bajaParcial()
     string matricula, nombre;
     nodo* encontrado = NULL;
 
-    do {
+    do 
+	{
         cout << "----- BAJA TOTAL -----" << endl;
         cout << "1- Buscar por matricula" << endl;
         cout << "2- Buscar por nombre" << endl;
@@ -558,43 +586,47 @@ void bajaParcial()
                 throw runtime_error("Entrada invalida. Por favor ingrese un numero.");
             }
 
-        if (opcion == 1) {
+        if (opcion == 1) 
+		{
             cout << "Ingrese la matricula del alumno: ";
             getline(cin, matricula);
             encontrado = buscarPorMatricula(matricula);
         }
-        else if (opcion == 2) {
+        else if (opcion == 2) 
+		{
             cout << "Ingrese el nombre del alumno: ";
             getline(cin, nombre);
             encontrado = buscarPorNombre(nombre);
         }
-        else if (opcion == 3) {
-            cout << "Regresando al men� anterior" << endl;
+        else if (opcion == 3) 
+		{
+            cout << "Regresando al menu anterior" << endl;
             break;
         }
-        else {
-            cout << "Opci�n fuera de rango. Intente de nuevo." << endl;
+        else 
+		{
+            cout << "Opcion fuera de rango. Intente de nuevo." << endl;
             continue;
         }
 
-        if (encontrado != NULL) {
+        if (encontrado != NULL) 
+		{
             cout << "\nAlumno encontrado: " << encontrado->nombre << endl;
             cout << "Matricula: " << encontrado->matricula << endl;
 
             eliminarDeLista(encontrado);
             cout << "El alumno ha sido eliminado permanentemente de la lista." << endl << endl;
             break;
-        } else if (opcion != 3) {
-            cout << "No se encontr� el alumno." << endl;
+        } else if (opcion != 3) 
+		{
+            cout << "No se encontr? el alumno." << endl;
         }
 
     } while (opcion != 3);
 }
 
-
-
-
-void eliminarDeLista(nodo* alumno) {
+void eliminarDeLista(nodo* alumno) 
+{
     if (alumno == NULL) return;
 
     if (alumno == inicio) inicio = alumno->sgte;
@@ -605,7 +637,8 @@ void eliminarDeLista(nodo* alumno) {
     delete alumno;
 }
 
-void insertPilaParcial(nodo* alumno) {
+void insertPilaParcial(nodo* alumno) 
+{
     pilaParcial* nuevo = new pilaParcial();
     nuevo->matricula = alumno->matricula;
     nuevo->nombre = alumno->nombre;
@@ -617,9 +650,11 @@ void insertPilaParcial(nodo* alumno) {
     tope = nuevo;
 }
 
-nodo* buscarPorNombre(const string& nombreBuscado) {
+nodo* buscarPorNombre(const string& nombreBuscado) 
+{
     nodo* actual = inicio;
-    while (actual != NULL) {
+    while (actual != NULL) 
+	{
         if (actual->nombre == nombreBuscado)
             return actual;
         actual = actual->sgte;
@@ -627,7 +662,8 @@ nodo* buscarPorNombre(const string& nombreBuscado) {
     return NULL;
 }
 
-void encolar(inscripcion*& frente, inscripcion*& finalCola, nodo* alumno) {
+void encolar(inscripcion*& frente, inscripcion*& finalCola, nodo* alumno) 
+{
     inscripcion* nuevo = new inscripcion();
     nuevo->matricula = alumno->matricula;
     nuevo->nombre = alumno->nombre;
@@ -637,14 +673,17 @@ void encolar(inscripcion*& frente, inscripcion*& finalCola, nodo* alumno) {
     nuevo->telefono = alumno->telefono;
     nuevo->sgte = NULL;
 
-    if (finalCola == NULL) {
+    if (finalCola == NULL) 
+	{
         frente = finalCola = nuevo;
-    } else {
+    } else 
+	{
         finalCola->sgte = nuevo;
         finalCola = nuevo;
     }
 }
-inscripcion* desencolar(inscripcion*& frente, inscripcion*& finalCola) {
+inscripcion* desencolar(inscripcion*& frente, inscripcion*& finalCola) 
+{
     if (frente == NULL) return NULL;
     inscripcion* temp = frente;
     frente = frente->sgte;
@@ -654,8 +693,10 @@ inscripcion* desencolar(inscripcion*& frente, inscripcion*& finalCola) {
 }
 
 
-void ordenarCola() {
-    if (inicio == NULL) {
+void ordenarCola() 
+{
+    if (inicio == NULL) 
+	{
         cout << "No hay alumnos registrados.\n";
         return;
     }
@@ -664,7 +705,8 @@ void ordenarCola() {
     nodo* actual = inicio;
 
 
-    while (actual != NULL) {
+    while (actual != NULL) 
+	{
         nodo* nuevo = new nodo();
         *nuevo = *actual;
         nuevo->sgte = copiaLista;
@@ -676,13 +718,16 @@ void ordenarCola() {
     bool swapped;
     nodo* ptr1;
     nodo* lptr = NULL;
-    do {
+    do 
+	{
         swapped = false;
         ptr1 = copiaLista;
-        while (ptr1->sgte != lptr) {
+        while (ptr1->sgte != lptr) 
+		{
             nodo* next = ptr1->sgte;
             if (ptr1->promedio < next->promedio ||
-                (ptr1->promedio == next->promedio && ptr1->nombre > next->nombre)) {
+                (ptr1->promedio == next->promedio && ptr1->nombre > next->nombre)) 
+			{
                 intercambiarNodos(ptr1, next);
                 swapped = true;
             }
@@ -693,25 +738,29 @@ void ordenarCola() {
 
 
     actual = copiaLista;
-    while (actual != NULL) {
+    while (actual != NULL) 
+	{
         encolar(frente, finalCola, actual);
         actual = actual->sgte;
     }
 
 
     actual = copiaLista;
-    while (actual != NULL) {
+    while (actual != NULL) 
+	{
         nodo* aux = actual;
         actual = actual->sgte;
         delete aux;
     }
 }
 
-bool pilaVacia() {
+bool pilaVacia() 
+{
     return tope == NULL;
 }
 
-pilaParcial* popPilaParcial() {
+pilaParcial* popPilaParcial() 
+{
     if (tope == NULL) return NULL;
     pilaParcial* nodo = tope;
     tope = tope->sgte;
@@ -732,7 +781,8 @@ void recuperarAlumno()
 
     // 3) Defensa: si por alguna razón ya existe esa matrícula activa, no duplicar.
     //    (Esto “rompe” el intento de insertar duplicados a propósito).
-    if (buscarPorMatricula(rec->matricula) != NULL) {
+    if (buscarPorMatricula(rec->matricula) != NULL) 
+	{
         cout << "Advertencia: ya existe un alumno activo con la misma matricula ("
              << rec->matricula << "). Se cancela la recuperacion para evitar duplicados." << endl;
         // Regresar el nodo a la pila para no perderlo
@@ -752,8 +802,10 @@ void recuperarAlumno()
 }
 
 
-void inscripciones() {
-    if (inicio == NULL) {
+void inscripciones() 
+{
+    if (inicio == NULL)
+	{
         cout << "No hay alumnos activos para inscribir.\n";
         return;
     }
@@ -767,13 +819,15 @@ void inscripciones() {
     // Contar alumnos en la cola
     int totalAlumnos = 0;
     inscripcion* temp = frente;
-    while (temp != NULL) {
+    while (temp != NULL) 
+	{
         totalAlumnos++;
         temp = temp->sgte;
     }
 
-    if (numGrupos <= 0 || totalAlumnos == 0) {
-        cout << "Datos inv�lidos.\n";
+    if (numGrupos <= 0 || totalAlumnos == 0) 
+	{
+        cout << "Datos inv?lidos.\n";
         return;
     }
 
@@ -786,17 +840,19 @@ void inscripciones() {
     int alumnosEnGrupo = 0;
     int limiteGrupo;
 
-    // Si sobran alumnos, los primeros grupos tendr�n uno mas
+    // Si sobran alumnos, los primeros grupos tendr?n uno mas
     if (extra > 0)
         limiteGrupo = base + 1;
     else
         limiteGrupo = base;
 
 
-    while (frente != NULL) {
+    while (frente != NULL) 
+	{
         inscripcion* alumno = desencolar(frente, finalCola);
 
-        if (alumnosEnGrupo == 0) {
+        if (alumnosEnGrupo == 0) 
+		{
             cout << "\nGrupo " << grupoActual << ":\n";
         }
 
@@ -804,22 +860,22 @@ void inscripciones() {
 
         alumnosEnGrupo++;
 
-        if (alumnosEnGrupo == limiteGrupo) {
-        grupoActual++;
-        alumnosEnGrupo = 0;
-
-
-        if (extra > 0) {
-            extra--;
-            limiteGrupo = base + 1;
-        } else {
-            limiteGrupo = base;
-        }
-    }
-
+        if (alumnosEnGrupo == limiteGrupo) 
+		{
+	        grupoActual++;
+	        alumnosEnGrupo = 0;
+	
+	
+	        if (extra > 0) 
+			{
+	            extra--;
+	            limiteGrupo = base + 1;
+	        } else 
+			{
+	            limiteGrupo = base;
+	        }
+    	}
         delete alumno;
     }
-
     cout << "\n=== Todos los alumnos fueron inscritos ===\n";
 }
-
