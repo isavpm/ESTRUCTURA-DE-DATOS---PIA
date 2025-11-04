@@ -1,7 +1,7 @@
 /*EQUIPO 5
 Ruben Gerardo Lozano Rodriguez
-Laura Isabella Villarreal P?rez Maldonado
-Jos? Gabriel P?rez Ram?rez
+Laura Isabella Villarreal Perez Maldonado
+Jose Gabriel P?rez Ram?rez
 */
 #include "validaciones.h"
 #include <iostream>
@@ -28,7 +28,7 @@ struct nodo
 
 nodo *inicio = NULL;
 nodo *fin = NULL;
-//PILA (no se si se pueda usar el mismo nodo de la lista)
+//PILA 
 struct pilaParcial
 {
 	string matricula;
@@ -41,6 +41,7 @@ struct pilaParcial
 };
 pilaParcial* tope = NULL;
 
+//COLA
 struct inscripcion 
 {
     string matricula;
@@ -85,7 +86,7 @@ void reportePromedioGeneral();
 void reporteDistribucionRangos();
 
 
-//main
+//MAIN
 int main()
 {
 	int menu;
@@ -152,7 +153,7 @@ int main()
     } while (!validInput || menu!=6);
 
 }
-//funciones
+//FUNCIONES
 void altaAlumnos()
 {
 	bool matriculaExiste = true;
@@ -291,7 +292,7 @@ void insertarFinal(string matricula, string nombre, int edad, double promedio, s
     nuevo->sgte = NULL;
     nuevo->anterior = NULL;
 
-    // Si la lista est? vac?a
+    // Si la lista esta vacia
     if (inicio == NULL)
     {
         inicio = nuevo;
@@ -335,7 +336,7 @@ void ordenarPorMatricula()
 {
     if (inicio == NULL || inicio->sgte == NULL) 
 	{
-        // Lista vac?a o con un solo elemento, ya est? ordenada
+        // Lista vacia o con un solo elemento, ya esta ordenada
         return;
     }
 
@@ -343,7 +344,7 @@ void ordenarPorMatricula()
     nodo* ptr1;
     nodo* lptr = NULL;
 
-    // Implementaci?n de Bubble Sort
+    // Implementacion de Bubble Sort
     do 
 	{
         swapped = false;
@@ -364,8 +365,8 @@ void ordenarPorMatricula()
 
     cout << "Lista ordenada por matricula exitosamente!" << endl;
 }
-//esta funcion es solo DEBUG, aun faltan los demas reportes
-void mostrarAlumnos()
+
+void reporteActivos()
 {
     if (inicio == NULL)
     {
@@ -376,7 +377,7 @@ void mostrarAlumnos()
     nodo *actual = inicio;
     int contador = 1;
 
-    cout << "\n--- LISTA DE ALUMNOS (ORDENADA POR MATRICULA) ---" << endl;
+    cout << "\n--- LISTA DE ALUMNOS ---" << endl;
     while (actual != NULL)
     {
         cout << "Alumno #" << contador << ":" << endl;
@@ -393,7 +394,7 @@ void mostrarAlumnos()
     }
 }
 
-// Funci?n de b?squeda binaria para la lista
+// Funcion de busqueda binaria para la lista
 nodo* buscarPorMatricula(const string& matriculaBuscada) 
 {
     if (inicio == NULL) 
@@ -440,7 +441,7 @@ nodo* buscarPorMatricula(const string& matriculaBuscada)
         }
     }
 
-    // Verificar el ?ltimo nodo
+    // Verificar el ultimo nodo
     if (izquierda != NULL && izquierda->matricula == matriculaBuscada)
 	{	
         return izquierda;
@@ -536,12 +537,12 @@ void bajaParcial()
         }
         else if (opcion == 3) 
 		{
-            cout << "Regresando al men? anterior" << endl;
+            cout << "Regresando al menu anterior" << endl;
             break;
         }
         else 
 		{
-            cout << "Opci?n fuera de rango. Intente de nuevo." << endl;
+            cout << "Opcion fuera de rango. Intente de nuevo." << endl;
             continue;
         }
 
@@ -557,14 +558,12 @@ void bajaParcial()
             break;
         } else if (opcion != 3) 
 		{
-            cout << "No se encontr? el alumno." << endl;
+            cout << "No se encontro el alumno." << endl;
         }
 
     } while (opcion != 3);
 }
 
-
-//pregunta por una matricula o un nombre, si es matricula es busqueda binaria y si es nombre busqueda secuencial
 void bajaTotal() 
 {
     if (inicio == NULL) 
@@ -627,7 +626,7 @@ void bajaTotal()
             break;
         } else if (opcion != 3) 
 		{
-            cout << "No se encontr? el alumno." << endl;
+            cout << "No se encontro el alumno." << endl;
         }
 
     } while (opcion != 3);
@@ -848,7 +847,7 @@ void inscripciones()
     int alumnosEnGrupo = 0;
     int limiteGrupo;
 
-    // Si sobran alumnos, los primeros grupos tendr?n uno mas
+    // Si sobran alumnos, los primeros grupos tendran uno mas
     if (extra > 0)
         limiteGrupo = base + 1;
     else
@@ -949,11 +948,6 @@ void menuReportes()
             break;
         }
     } while (!validInput || op != 7);
-}
-
-void reporteActivos()
-{
-    mostrarAlumnos();
 }
 
 void reporteInactivos()
