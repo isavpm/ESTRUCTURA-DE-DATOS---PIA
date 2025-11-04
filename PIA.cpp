@@ -76,6 +76,14 @@ void encolar(inscripcion*& frente, inscripcion*& finalCola, nodo* alumno);
 void recuperarAlumno();
 bool pilaVacia();
 pilaParcial* popPilaParcial();
+void menuReportes();
+void reporteActivos();
+void reporteInactivos();
+void reporteAprobadosReprobados();
+void reporteTop3();
+void reportePromedioGeneral();
+void reporteDistribucionRangos();
+
 
 //main
 int main()
@@ -133,8 +141,8 @@ int main()
             break;
 
         	case 4:
-        		cout<<"Reportes"<<endl;
-        		mostrarAlumnos();
+        		cout << "Reportes" << endl;
+                menuReportes();
         	break;
         	case 5:
         		cout<<"Inscripciones"<<endl;
@@ -878,4 +886,243 @@ void inscripciones()
         delete alumno;
     }
     cout << "\n=== Todos los alumnos fueron inscritos ===\n";
+}
+void menuReportes()
+{
+    int op;
+    bool validInput = false;
+
+    do
+    {
+        try
+        {
+            cout << "\n===== REPORTES =====" << endl;
+            cout << "1- Alumnos activos (lista)" << endl;
+            cout << "2- Alumnos inactivos (pila)" << endl;
+            cout << "3- Aprobados / Reprobados (%)" << endl;
+            cout << "4- Top 3 promedios" << endl;
+            cout << "5- Promedio general" << endl;
+            cout << "6- Rangos (90-100,80-89,70-79,<70)" << endl;
+            cout << "7- Regresar" << endl;
+            cout << "Ingrese una opcion (1-7): " << endl;
+
+            cin >> op;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            if (cin.fail())
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                throw runtime_error("Entrada invalida. Por favor ingrese un numero.");
+            }
+            if (op < 1 || op > 7)
+            {
+                throw out_of_range("Opcion fuera de rango. Ingrese un numero entre 1 y 7.");
+            }
+
+            validInput = true;
+        }
+        catch (const exception& e)
+        {
+            cout << "Error: " << e.what() << endl;
+        }
+
+        switch (op)
+        {
+            case 1:
+                reporteActivos();
+            break;
+            case 2:
+                reporteInactivos();
+            break;
+            case 3:
+                reporteAprobadosReprobados();
+            break;
+            case 4:
+                reporteTop3();
+            break;
+            case 5:
+                reportePromedioGeneral();
+            break;
+            case 6:
+                reporteDistribucionRangos();
+            break;
+        }
+    } while (!validInput || op != 7);
+}
+
+void reporteActivos()
+{
+    mostrarAlumnos();
+}
+
+void reporteInactivos()
+{
+    if (tope == NULL)
+    {
+        cout << "No hay alumnos inactivos en baja parcial (pila vacia)." << endl;
+        return;
+    }
+
+    cout << "\n--- ALUMNOS INACTIVOS ---" << endl;
+
+    pilaParcial* p = tope;
+    int i = 1;
+
+    while (p != NULL)
+    {
+        cout << "Inactivo #" << i << ":" << endl;
+        cout << "Matricula: " << p->matricula << endl;
+        cout << "Nombre: " << p->nombre << endl;
+        cout << "Edad: " << p->edad << endl;
+        cout << "Promedio: " << p->promedio << endl;
+        cout << "Direccion: " << p->direccion << endl;
+        cout << "Telefono: " << p->telefono << endl;
+        cout << "------------------------" << endl;
+
+        p = p->sgte;  
+        i++;
+    }
+}
+
+void reporteAprobadosReprobados()
+{
+    if (inicio == NULL)
+    {
+        cout << "No hay alumnos activos." << endl;
+        return;
+    }
+
+    int total = 0;
+    int apr = 0;
+    int rep = 0;
+
+    nodo* a = inicio;
+    while (a != NULL)
+    {
+        total++;
+        if (a->promedio >= 70.0) 
+            apr++;
+        else 
+            rep++;
+        a = a->sgte;
+    }
+
+    double pApr = (total > 0) ? (apr * 100.0 / total) : 0.0;
+    double pRep = (total > 0) ? (rep * 100.0 / total) : 0.0;
+
+    cout << "\n--- APROBADOS / REPROBADOS ---" << endl;
+    cout << "Total activos: " << total << endl;
+    cout << "Aprobados: " << apr << " (" << pApr << "%)" << endl;
+    cout << "Reprobados: " << rep << " (" << pRep << "%)" << endl;
+}
+
+void reporteTop3()
+{
+    if (inicio == NULL)
+    {
+        cout << "No hay alumnos activos." << endl;
+        return;
+    }
+
+    string m1 = "", m2 = "", m3 = "";
+    string n1 = "", n2 = "", n3 = "";
+    double p1 = -1.0, p2 = -1.0, p3 = -1.0;
+
+    nodo* a = inicio;
+    while (a != NULL)
+    {
+        if (a->promedio > p1)
+            p1 = a->promedio; n1 = a->nombre; m1 = a->matricula;
+        a = a->sgte;
+    }
+
+    a = inicio;
+    while (a != NULL)
+    {
+        if (a->matricula != m1 && a->promedio > p2)
+            p2 = a->promedio; n2 = a->nombre; m2 = a->matricula;
+        a = a->sgte;
+    }
+
+    a = inicio;
+    while (a != NULL)
+    {
+        if (a->matricula != m1 && a->matricula != m2 && a->promedio > p3)
+            p3 = a->promedio; n3 = a->nombre; m3 = a->matricula;
+        a = a->sgte;
+    }
+
+    cout << "\n--- TOP 3 PROMEDIOS ---" << endl;
+    int rank = 1;
+    if (p1 >= 0.0) { cout << rank << ") " << n1 << " (" << m1 << ")  " << p1 << endl; rank++; }
+    if (p2 >= 0.0) { cout << rank << ") " << n2 << " (" << m2 << ")  " << p2 << endl; rank++; }
+    if (p3 >= 0.0) { cout << rank << ") " << n3 << " (" << m3 << ")  " << p3 << endl; rank++; }
+    if (rank == 1) { cout << "No hay suficientes alumnos." << endl; }
+}
+
+void reportePromedioGeneral()
+{
+    if (inicio == NULL)
+    {
+        cout << "No hay alumnos activos." << endl;
+        return;
+    }
+
+    int total = 0;
+    double suma = 0.0;
+
+    nodo* a = inicio;
+    while (a != NULL)
+    {
+        suma += a->promedio;
+        total++;
+        a = a->sgte;
+    }
+
+    double media = (total > 0) ? (suma / total) : 0.0;
+
+    cout << "\n--- PROMEDIO GENERAL ---" << endl;
+    cout << "Alumnos: " << total << endl;
+    cout << "Media: " << media << endl;
+}
+
+void reporteDistribucionRangos()
+{
+    if (inicio == NULL)
+    {
+        cout << "No hay alumnos activos." << endl;
+        return;
+    }
+
+    int r90 = 0;
+    int r80 = 0;
+    int r70 = 0;
+    int rMenor70 = 0;
+    int total = 0;
+
+    nodo* a = inicio;
+    while (a != NULL)
+    {
+        double p = a->promedio;
+        total++;
+
+        if (p >= 90.0) r90++;
+        else if (p >= 80.0) r80++;
+        else if (p >= 70.0) r70++;
+        else rMenor70++;
+
+        a = a->sgte;
+    }
+
+    double pct90 = (total > 0) ? (r90 * 100.0 / total) : 0.0;
+    double pct80 = (total > 0) ? (r80 * 100.0 / total) : 0.0;
+    double pct70 = (total > 0) ? (r70 * 100.0 / total) : 0.0;
+    double pctM  = (total > 0) ? (rMenor70 * 100.0 / total) : 0.0;
+
+    cout << "\n--- DISTRIBUCION POR RANGOS ---" << endl;
+    cout << "90-100: " << r90 << " (" << pct90 << "%)" << endl;
+    cout << "80-89 : " << r80 << " (" << pct80 << "%)" << endl;
+    cout << "70-79 : " << r70 << " (" << pct70 << "%)" << endl;
+    cout << "< 70  : " << rMenor70 << " (" << pctM  << "%)" << endl;
 }
